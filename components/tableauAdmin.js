@@ -23,7 +23,7 @@ export default function TableauAdmin() {
     { href: "/fournisseurs", label: "Fournisseurs", icon: TruckIcon },
     { href: "/agences", label: "Agence", icon: BuildingOffice2Icon },
     { href: "/utilisateur", label: "Utilisateurs", icon: UserGroupIcon },
-    { href: "/distribution", label: "Distribution", icon: SwatchIcon },
+    { href: "/categorie", label: "Catégories", icon: SwatchIcon },
     { href: "/produits", label: "Produits", icon: RectangleGroupIcon },
     { href: "/rapports", label: "Rapport", icon: ChartPieIcon },
   ];

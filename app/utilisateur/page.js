@@ -1,37 +1,76 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Nav from "@/components/Nav";
 import TableauAdmin from "@/components/tableauAdmin";
 import { PencilIcon, TrashIcon, EnvelopeIcon } from "@heroicons/react/24/outline";
 
 export default function Utilisateurs() {
-  const [users, setUsers] = useState([
-    { id: 1, name: "Admin 1", role: "Super Admin", email: "admin1@example.com", agenceId: "001" },
-    { id: 2, name: "Admin 2", role: "Admin Agence", email: "admin2@example.com", agenceId: "002" },
-  ]);
-
+  const [users, setUsers] = useState([]);
+  const [agences, setAgences] = useState([]);
   const [newUser, setNewUser] = useState({ name: "", role: "Admin Agence", email: "", agenceId: "", password: "" });
 
-  const handleEdit = (id) => {
-    const userName = prompt("Modifier le nom de l'utilisateur:", users.find((u) => u.id === id)?.name);
-    if (userName) {
-      setUsers(users.map((u) => (u.id === id ? { ...u, name: userName } : u)));
+  const fetchUsers = async () => {
+    try {
+      const token = localStorage.getItem("token"); // Exemple de récupération du token
+      const response = await fetch("https://gestock-app.onrender.com/User", {
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      });
+      if (!response.ok) throw new Error("Erreur lors de la récupération des utilisateurs");
+      
+      const data = await response.json();
+      console.log("Data received:", data); // Log pour déboguer
+      setUsers(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error(error);
+      alert("Erreur de chargement des utilisateurs");
+      setUsers([]);
     }
   };
 
-  const handleDelete = (id) => {
-    if (confirm("Êtes-vous sûr de vouloir supprimer cet utilisateur ?")) {
-      setUsers(users.filter((u) => u.id !== id));
+  const fetchAgences = async () => {
+    try {
+      const response = await fetch("https://gestock-app.onrender.com/Agence");
+      if (!response.ok) throw new Error("Erreur lors de la récupération des agences");
+
+      const data = await response.json();
+      setAgences(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error(error);
+      alert("Erreur de chargement des agences");
+      setAgences([]);
     }
   };
 
-  const handleAddUser = (e) => {
+  useEffect(() => {
+    fetchUsers();
+    fetchAgences();
+  }, []);
+
+  const handleAddUser = async (e) => {
     e.preventDefault();
-    if (newUser.name && newUser.email && newUser.agenceId && newUser.password) {
-      setUsers([...users, { id: Date.now(), ...newUser }]);
-      alert(`Email de confirmation envoyé à ${newUser.email}`);
-      setNewUser({ name: "", role: "Admin Agence", email: "", agenceId: "", password: "" });
+    if (!newUser.name || !newUser.email || !newUser.agenceId || !newUser.password) {
+      alert("Veuillez remplir tous les champs.");
+      return;
+    }
+
+    try {
+      const response = await fetch("https://gestock-app.onrender.com/User", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newUser),
+      });
+
+      if (!response.ok) throw new Error("Erreur lors de l'ajout de l'utilisateur");
+
+      alert(`Utilisateur ajouté avec succès ! Email de confirmation envoyé à ${newUser.email}`);
+      setNewUser({ name: "", role: "", email: "", agenceId: "", password: "" });
+      fetchUsers();
+    } catch (error) {
+      console.error(error);
+      alert("Erreur lors de l'ajout de l'utilisateur");
     }
   };
 
@@ -46,7 +85,7 @@ export default function Utilisateurs() {
           <form className="mb-6 flex flex-wrap gap-4" onSubmit={handleAddUser}>
             <input
               type="text"
-              placeholder="Nom"
+              placeholder="username"
               value={newUser.name}
               onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
               className="border px-3 py-2 rounded-md w-1/4"
@@ -60,14 +99,20 @@ export default function Utilisateurs() {
               className="border px-3 py-2 rounded-md w-1/4"
               required
             />
-            <input
-              type="text"
-              placeholder="ID Agence"
+            <select
               value={newUser.agenceId}
               onChange={(e) => setNewUser({ ...newUser, agenceId: e.target.value })}
               className="border px-3 py-2 rounded-md w-1/4"
               required
-            />
+            >
+              <option value="">Sélectionner une agence</option>
+              {agences.map((agence) => (
+                <option key={agence.id} value={agence.id}>
+                  {agence.nom}
+                </option>
+              ))}
+            </select>
+
             <input
               type="password"
               placeholder="Mot de passe"
@@ -81,8 +126,8 @@ export default function Utilisateurs() {
               onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
               className="border px-3 py-2 rounded-md w-1/4"
             >
-              <option value="Admin Agence">Admin Agence</option>
-              <option value="Super Admin">Super Admin</option>
+              <option value="root">root</option>
+              <option value="admin">Admin</option>
             </select>
             <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Ajouter</button>
           </form>
@@ -90,33 +135,27 @@ export default function Utilisateurs() {
           <table className="w-full border-collapse">
             <thead>
               <tr className="bg-gray-200">
-                <th className="px-4 py-2 text-left">Nom</th>
-                <th className="px-4 py-2 text-left">Email</th>
-                <th className="px-4 py-2 text-left">Rôle</th>
-                <th className="px-4 py-2 text-left">ID Agence</th>
-                <th className="px-4 py-2 text-left">Actions</th>
+                <th className="px-4 py-2 text-left">username</th>
+                <th className="px-4 py-2 text-left">email</th>
+                <th className="px-4 py-2 text-left">role</th>
+                <th className="px-4 py-2 text-left">agence</th>
               </tr>
             </thead>
             <tbody>
-              {users.map((user, index) => (
-                <tr key={user.id} className={`border-b ${index % 2 === 0 ? "bg-gray-50" : ""}`}>
-                  <td className="px-4 py-3">{user.name}</td>
-                  <td className="px-4 py-3">{user.email}</td>
-                  <td className="px-4 py-3">{user.role}</td>
-                  <td className="px-4 py-3">{user.agenceId}</td>
-                  <td className="px-4 py-3 flex space-x-2">
-                    <button className="text-blue-600 hover:text-blue-800" onClick={() => handleEdit(user.id)}>
-                      <PencilIcon className="h-5 w-5" />
-                    </button>
-                    <button className="text-red-600 hover:text-red-800" onClick={() => handleDelete(user.id)}>
-                      <TrashIcon className="h-5 w-5" />
-                    </button>
-                    <button className="text-green-600 hover:text-green-800" onClick={() => alert(`Email envoyé à ${user.email}`)}>
-                      <EnvelopeIcon className="h-5 w-5" />
-                    </button>
-                  </td>
+              {users.length > 0 ? (
+                users.map((user, index) => (
+                  <tr key={user.id} className={`border-b ${index % 2 === 0 ? "bg-gray-50" : ""}`}>
+                    <td className="px-4 py-3">{user.name}</td>
+                    <td className="px-4 py-3">{user.email}</td>
+                    <td className="px-4 py-3">{user.role}</td>
+                    <td className="px-4 py-3">{user.agenceId}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="4" className="text-center py-4">Aucun utilisateur trouvé</td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>

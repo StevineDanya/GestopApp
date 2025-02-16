@@ -3,7 +3,7 @@
 
 import React, { useState } from "react";
 import TableauAdmin from "./tableauAdmin";
-import Nav from "./Nav";
+import Nav from "../components/Nav"; // Si le fichier est dans `app/components/`
 
 const Home = () => {
   // États pour stocker les données

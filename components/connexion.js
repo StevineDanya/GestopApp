@@ -1,19 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation"; // Import du router pour la redirection
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 export default function Connexion() {
   const [formData, setFormData] = useState({
-    username: "",
+    email: "",
     password: "",
     rememberMe: false,
   });
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const router = useRouter(); // Initialisation du router
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,30 +21,35 @@ export default function Connexion() {
     setError("");
 
     try {
-      const response = await fetch("https://backend-soutenance-1.onrender.com/users/Login", {
+      const response = await fetch("https://gestock-app.onrender.com/User/Login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username: formData.username,
+          email: formData.email,
           password: formData.password,
         }),
       });
 
+      const data = await response.json();
+      console.log("Réponse API :", data);
+
       if (!response.ok) {
-        throw new Error("Erreur de connexion. Veuillez vérifier vos identifiants.");
+        throw new Error(data.message || "Erreur de connexion. Vérifiez vos identifiants.");
       }
 
-      const data = await response.json();
-      console.log("Connexion réussie :", data);
+      // Vérification des données reçues
+      if (!data.token || !data.redirect || !data.user) {
+        throw new Error("Réponse du serveur invalide.");
+      }
 
-      // Stockage du token dans localStorage
-      localStorage.setItem('token', data.token);
+      // Stockage du token et des informations utilisateur
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
 
-      // Redirection vers la page d'accueil
-      router.push('/accueil');  // Assure-toi que la page /accueil existe dans ton projet
-
+      // Redirection selon la réponse API
+      router.push(data.redirect);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -62,22 +67,18 @@ export default function Connexion() {
 
   return (
     <div className="h-screen flex flex-col items-center justify-center bg-blue-400 p-4">
-      <h1 className="text-3xl font-bold text-white mb-8">
-        Bienvenue sur votre Dashboard
-      </h1>
+      <h1 className="text-3xl font-bold text-white mb-8">Bienvenue sur votre Dashboard</h1>
       <div className="bg-white p-10 rounded-xl shadow-lg w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
-          Connexion
-        </h2>
+        <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Connexion</h2>
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-gray-700 font-medium">Identifiant</label>
+            <label className="block text-gray-700 font-medium">Email</label>
             <input
-              type="text"
-              name="username"
-              placeholder="Entrez votre identifiant"
-              value={formData.username}
+              type="email"
+              name="email"
+              placeholder="Entrez votre email"
+              value={formData.email}
               onChange={handleChange}
               className="w-full p-3 border rounded-md focus:ring-2 focus:ring-blue-500"
               required
@@ -113,7 +114,7 @@ export default function Connexion() {
           <button
             type="submit"
             disabled={loading}
-            className={`w-full p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium text-lg ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+            className={`w-full p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium text-lg ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
           >
             {loading ? "Connexion en cours..." : "Se connecter"}
           </button>

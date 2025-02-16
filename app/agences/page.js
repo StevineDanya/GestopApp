@@ -3,6 +3,7 @@ import Image from "next/image";
 import Clients from "@/components/agences";
 import TableauAdmin from "@/components/tableauAdmin";
 
+
 export default function Agences() {
   return (
     <div className="flex">

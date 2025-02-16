@@ -4,24 +4,24 @@ import { useState, useEffect } from "react";
 import Nav from "@/components/Nav";
 import TableauAdmin from "@/components/tableauAdmin";
 
-export default function Fournisseurs() {
-  const [fournisseurs, setFournisseurs] = useState([]);
-  const [newFournisseur, setNewFournisseur] = useState({ name: "" });
+export default function Categories() {
+  const [categories, setCategories] = useState([]);
+  const [newCategory, setNewCategory] = useState({ name: "" });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const API_URL = "https://gestock-app.onrender.com/Fournisseur";
+  const API_URL = "https://gestock-app.onrender.com/Categorie";
 
-  // 🔹 Récupérer les fournisseurs
+  // 🔹 Récupérer les catégories
   useEffect(() => {
     fetch(API_URL)
       .then((response) => {
-        if (!response.ok) throw new Error("Erreur lors du chargement des fournisseurs");
+        if (!response.ok) throw new Error("Erreur lors du chargement des catégories");
         return response.json();
       })
       .then((data) => {
-        console.log("Données récupérées :", data); // Vérifier en console
-        setFournisseurs(data);
+        console.log("Données récupérées :", data);
+        setCategories(data);
         setLoading(false);
       })
       .catch((err) => {
@@ -30,34 +30,34 @@ export default function Fournisseurs() {
       });
   }, []);
 
-  // 🔹 Ajouter un fournisseur
-  const handleAddFournisseur = async (e) => {
+  // 🔹 Ajouter une catégorie
+  const handleAddCategory = async (e) => {
     e.preventDefault();
-    if (!newFournisseur.name) return;
+    if (!newCategory.name) return;
 
     try {
       const response = await fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newFournisseur),
+        body: JSON.stringify(newCategory),
       });
 
       if (!response.ok) throw new Error("Erreur lors de l'ajout");
 
-      const addedFournisseur = await response.json();
-      setFournisseurs([...fournisseurs, addedFournisseur]);
-      setNewFournisseur({ name: "" });
+      const addedCategory = await response.json();
+      setCategories([...categories, addedCategory]);
+      setNewCategory({ name: "" });
     } catch (err) {
       alert(err.message);
     }
   };
 
-  // 🔹 Modifier un fournisseur
+  // 🔹 Modifier une catégorie
   const handleEdit = async (id) => {
-    const fournisseur = fournisseurs.find((f) => f._id === id);
-    if (!fournisseur) return;
+    const category = categories.find((c) => c._id === id);
+    if (!category) return;
 
-    const newName = prompt("Modifier le nom du fournisseur :", fournisseur.name);
+    const newName = prompt("Modifier le nom de la catégorie :", category.name);
     if (!newName) return;
 
     try {
@@ -69,15 +69,15 @@ export default function Fournisseurs() {
 
       if (!response.ok) throw new Error("Erreur lors de la modification");
 
-      setFournisseurs(fournisseurs.map((f) => (f._id === id ? { ...f, name: newName } : f)));
+      setCategories(categories.map((c) => (c._id === id ? { ...c, name: newName } : c)));
     } catch (err) {
       alert(err.message);
     }
   };
 
-  // 🔹 Supprimer un fournisseur
+  // 🔹 Supprimer une catégorie
   const handleDelete = async (id) => {
-    if (!confirm("Êtes-vous sûr de vouloir supprimer ce fournisseur ?")) return;
+    if (!confirm("Êtes-vous sûr de vouloir supprimer cette catégorie ?")) return;
 
     try {
       const response = await fetch(`${API_URL}/${id}`, {
@@ -86,7 +86,7 @@ export default function Fournisseurs() {
 
       if (!response.ok) throw new Error("Erreur lors de la suppression");
 
-      setFournisseurs(fournisseurs.filter((f) => f._id !== id));
+      setCategories(categories.filter((c) => c._id !== id));
     } catch (err) {
       alert(err.message);
     }
@@ -98,15 +98,15 @@ export default function Fournisseurs() {
       <div className="container bg-slate-50 mx-auto p-6">
         <Nav />
         <div className="bg-white shadow-lg p-6 rounded-lg mt-6">
-          <h1 className="text-2xl font-bold text-gray-800 mb-4">Gestion des Fournisseurs</h1>
+          <h1 className="text-2xl font-bold text-gray-800 mb-4">Gestion des Catégories</h1>
 
           {/* FORMULAIRE D'AJOUT */}
-          <form className="mb-6 flex gap-4" onSubmit={handleAddFournisseur}>
+          <form className="mb-6 flex gap-4" onSubmit={handleAddCategory}>
             <input
               type="text"
-              placeholder="Nom du fournisseur"
-              value={newFournisseur.name}
-              onChange={(e) => setNewFournisseur({ name: e.target.value })}
+              placeholder="Nom de la catégorie"
+              value={newCategory.name}
+              onChange={(e) => setNewCategory({ name: e.target.value })}
               className="border px-3 py-2 rounded-md w-1/3"
               required
             />
@@ -115,9 +115,9 @@ export default function Fournisseurs() {
             </button>
           </form>
 
-          {/* AFFICHAGE DES FOURNISSEURS */}
+          {/* AFFICHAGE DES CATÉGORIES */}
           {loading ? (
-            <p>Chargement des fournisseurs...</p>
+            <p>Chargement des catégories...</p>
           ) : error ? (
             <p className="text-red-600">{error}</p>
           ) : (
@@ -129,19 +129,19 @@ export default function Fournisseurs() {
                 </tr>
               </thead>
               <tbody>
-                {fournisseurs.map((fournisseur, index) => (
-                  <tr key={fournisseur._id} className={`border-b ${index % 2 === 0 ? "bg-gray-50" : ""}`}>
-                    <td className="px-4 py-3">{fournisseur.name}</td>
+                {categories.map((category, index) => (
+                  <tr key={category._id} className={`border-b ${index % 2 === 0 ? "bg-gray-50" : ""}`}>
+                    <td className="px-4 py-3">{category.name}</td>
                     <td className="px-4 py-3 flex space-x-2">
                       <button
                         className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
-                        onClick={() => handleEdit(fournisseur._id)}
+                        onClick={() => handleEdit(category._id)}
                       >
                         Modifier
                       </button>
                       <button
                         className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                        onClick={() => handleDelete(fournisseur._id)}
+                        onClick={() => handleDelete(category._id)}
                       >
                         Supprimer
                       </button>
