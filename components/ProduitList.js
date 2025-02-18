@@ -121,7 +121,7 @@ export default function ProduitList() {
           <input type="number" name="quantite" placeholder="Quantité" value={newProduct.quantite} onChange={handleInputChange} className="p-3 border rounded-md" />
           <input type="number" name="Stockminimal" placeholder="Stock minimal" value={newProduct.Stockminimal} onChange={handleInputChange} className="p-3 border rounded-md" />
         </div>
-        <button type="submit" className="mt-4 w-full bg-blue-600 text-white p-3 rounded-md" disabled={loading}>{loading ? "Ajout..." : "Ajouter Produit"}</button>
+<button type="submit" className="mt-4 w-full bg-blue-500 text-white p-3 rounded-md" disabled={loading}>{loading ? "Ajout..." : "Ajouter Produit"}</button>
       </form>
        <h1 className="text-xl font-semibold mb-6">Gestion des Produits</h1>
       
