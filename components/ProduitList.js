@@ -123,7 +123,7 @@ export default function ProduitList() {
         </div>
         <button type="submit" className="mt-4 w-full bg-blue-600 text-white p-3 rounded-md" disabled={loading}>{loading ? "Ajout..." : "Ajouter Produit"}</button>
       </form>
-       <h1 className="text-xl font-bold mb-6">Gestion des Produits</h1>
+       <h1 className="text-xl font-semibold mb-6">Gestion des Produits</h1>
       
       <table className="w-full border-collapse shadow-lg">
         <thead>

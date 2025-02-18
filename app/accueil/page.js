@@ -109,7 +109,7 @@ export default function Home() {
           <>
             {/* Suivi hebdomadaire des mouvements */}
             <section className="bg-white rounded-lg shadow-md p-4 mb-8">
-              <h2 className="text-gray-800 font-semibold text-lg mb-4">
+              <h2 className="text-gray-800 text-xl font-semibold mb-4">
                 Suivi Hebdomadaire des Mouvements
               </h2>
               <table className="w-full border-collapse border border-gray-200">
@@ -156,7 +156,7 @@ export default function Home() {
 
             {/* Formulaire de distribution */}
             <div className="p-8">
-              <h1 className="text-xl font-bold mb-6">Gestion de Distribution</h1>
+              <h1 className="text-xl font-semibold mb-6">Gestion de Distribution</h1>
               <DistributionForm addMovement={addMovement} />
             </div>
           </>

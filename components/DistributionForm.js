@@ -92,7 +92,7 @@ export default function DistributionForm() {
     <div className="p-6 bg-white shadow-md rounded-lg">
       <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
         <select name="nom" value={newDistribution.nom} onChange={handleInputChange} className="p-3 border rounded-md" required>
-          <option value="" disabled>Choisir un produit</option>
+          <option value="" disabled >Choisir un produit</option>
           {products.length > 0 ? (
             products.map((p) => (
               <option key={p._id} value={p._id}>{p.nom}</option>

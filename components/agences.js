@@ -108,11 +108,7 @@ export default function Clients() {
           <div className="my-6">
             <div className="flex justify-between items-center mb-4">
               <h1 className="text-3xl font-bold max-sm:text-xl ml-4 text-gray-800">Agences</h1>
-              <Link href="/creationagence">
-                <button className="flex items-center bg-green-500 text-white py-2 px-4 rounded hover:bg-blue-600 hover:scale-95 transition duration-150 max-sm:hidden">
-                  Ajouter une Agence
-                </button>
-              </Link>
+             
             </div>
 
             <div className="card shadow-md border rounded-lg p-4 mb-6">
@@ -127,14 +123,14 @@ export default function Clients() {
                   required
                 />
                 <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
-                  Ajouter
+                  Ajouter 
                 </button>
               </form>
             </div>
 
             <div className="card shadow-md border rounded-lg">
               <div className="card-header flex justify-between items-center py-3 px-4 bg-gray-100">
-                <h6 className="font-semibold text-blue-600">Liste des agences</h6>
+                <h2 className="text-xl font-semibold text-blue-600">Liste des agences</h2>
               </div>
               <div className="p-4">
                 <div className="overflow-x-auto">

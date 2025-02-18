@@ -66,7 +66,7 @@ export default function Connexion() {
   };
 
   return (
-    <div className="h-screen flex flex-col items-center justify-center bg-blue-400 p-4">
+    <div className="h-screen flex flex-col items-center justify-center bg-blue-500 p-4">
       <h1 className="text-3xl font-bold text-white mb-8">Bienvenue sur votre Dashboard</h1>
       <div className="bg-white p-10 rounded-xl shadow-lg w-full max-w-md">
         <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Connexion</h2>

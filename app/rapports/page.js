@@ -39,13 +39,13 @@ export default function Rapport() {
             <div className="flex-1 bg-white w-full h-screen">
               {/* Table des rapports */}
               <div className="rounded-xl">
-                <div className="flex justify-between bg-cyan-500 max-sm:h-20 items-center rounded-xl mb-8">
+                <div className="flex justify-between bg-blue-500 max-sm:h-20 items-center rounded-xl mb-8">
                   <h1 className="text-3xl max-sm:text-xl font-bold text-white p-6">
                     Suivis Hebdomadaires des Mouvements...
                   </h1>
                   <Link className="max-sm:hidden" href="/inscrit">
-                    <button className="flex items-center bg-green-500 text-white py-3 px-5 mr-5 rounded-xl hover:bg-blue-600 hover:scale-95 transition duration-150">
-                      Autres rapports
+                    <button className="flex items-center bg-white text-black py-3 px-5 mr-5 rounded-xl hover:bg-blue-600 hover:scale-95 transition duration-150">
+                      Ajouter un rapports
                     </button>
                   </Link>
                 </div>

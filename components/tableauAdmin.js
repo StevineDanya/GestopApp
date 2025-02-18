@@ -51,8 +51,8 @@ export default function TableauAdmin() {
     >
       {/* Version Desktop  */}
 
-      <section className="bg-blue-500 text-white h-screen p-6 w-64  max-sm:hidden">
-        <Image src="/logo.jfif" alt="logo" width={90} height={50} />
+      <section className="bg-blue-600 text-white h-full p-6 w-64  max-sm:hidden">
+        <Image src="/logo.jpeg" alt="logo" width={90} height={50} color="bg-blue-600"/>
         {renderMenu(menuItems)}
         <Link
           href="/"
@@ -74,7 +74,7 @@ export default function TableauAdmin() {
       {isOpen && (
         <div className="fixed top-0 left-0 w-full h-screen bg-opacity-50 z-20">
           <section className="bg-cyan-950 text-white h-full p-6 w-64">
-            <Image src="/logoBamboo.jpg" alt="logo" width={200} height={200} />
+            <Image src="/logo.png" alt="logo" width={200} height={200} />
             {renderMenu(menuItems)}
             <Link
               href="/"

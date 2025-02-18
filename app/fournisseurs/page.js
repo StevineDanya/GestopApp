@@ -98,7 +98,7 @@ export default function Fournisseurs() {
       <div className="container bg-slate-50 mx-auto p-6">
         <Nav />
         <div className="bg-white shadow-lg p-6 rounded-lg mt-6">
-          <h1 className="text-2xl font-bold text-gray-800 mb-4">Gestion des Fournisseurs</h1>
+          <h1 className="text-xl font-semibold text-gray-800 mb-4">Gestion des Fournisseurs</h1>
 
           {/* FORMULAIRE D'AJOUT */}
           <form className="mb-6 flex gap-4" onSubmit={handleAddFournisseur}>
@@ -110,7 +110,7 @@ export default function Fournisseurs() {
               className="border px-3 py-2 rounded-md w-1/3"
               required
             />
-            <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
               Ajouter
             </button>
           </form>
@@ -134,7 +134,7 @@ export default function Fournisseurs() {
                     <td className="px-4 py-3">{fournisseur.name}</td>
                     <td className="px-4 py-3 flex space-x-2">
                       <button
-                        className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+                        className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
                         onClick={() => handleEdit(fournisseur._id)}
                       >
                         Modifier
